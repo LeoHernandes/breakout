@@ -1,4 +1,6 @@
-#include <conio2.h>
+#ifndef ESTRUTURAS_CONSTANTES_H
+#define ESTRUTURAS_CONSTANTES_H
+
 //-------- CONSTANTES FISICAS --------
 typedef enum
 {
@@ -35,8 +37,8 @@ typedef enum
     BARRA_H = 205,
     SIMBOLO_PALHETA = 223,
     SIMBOLO_BOLINHA = 254,
-    ESPECIAL = -32, //caractere especial
-    NUMPAD = 0, //valor do primeiro getch do teclado numérico
+    ESPECIAL = -32, // caractere especial
+    NUMPAD = 0,     // valor do primeiro getch do teclado numï¿½rico
     SETA_DIREITA = 77,
     SETA_ESQUERDA = 75,
     SETA_CIMA = 72,
@@ -66,41 +68,41 @@ typedef enum
 
 //------ ESTRUTURAS --------
 typedef struct
-//ESTRUTURA COORDENADA
+// ESTRUTURA COORDENADA
 {
     int x;
     int y;
 } COORDENADA;
 
 typedef struct
-//ESTRUTURA BOLA
+// ESTRUTURA BOLA
 {
     COORDENADA posicao;            // posicao da bola no jogo
     COORDENADA velocidade_direcao; // direcao e velocidade de deslocamento
-    COLORS cor;                    // cor da bola
+    int cor;                       // cor da bola
 } BOLA;
 
 typedef struct
-//ESTRUTURA PALHETA
+// ESTRUTURA PALHETA
 {
-    COORDENADA ponto1;              // coordenada do canto superior esq do envelope
-    COORDENADA ponto2;              // coordenada do canto inferior dir do envelope
-    COLORS cor;                     // cor da palheta
+    COORDENADA ponto1; // coordenada do canto superior esq do envelope
+    COORDENADA ponto2; // coordenada do canto inferior dir do envelope
+    int cor;           // cor da palheta
 } PALHETA;
 
 typedef struct
-//ESTRUTURA JOGADOR
+// ESTRUTURA JOGADOR
 {
     char nome[MAX_NOME_JOGADOR]; // nome com 3 letras
-    int vidas;    // quantidade de vidas restantes
-    int fase;     // fase em que esta' jogando
-    int pontos;   // pontuacao atual
-    short bonusponto; //é 1 se ele está com o buff de pontos, é 0 se não está
-    short bonuspalheta; //é 1 se ele está com o buff da palheta, é 0 se não está
+    int vidas;                   // quantidade de vidas restantes
+    int fase;                    // fase em que esta' jogando
+    int pontos;                  // pontuacao atual
+    short bonusponto;            // ï¿½ 1 se ele estï¿½ com o buff de pontos, ï¿½ 0 se nï¿½o estï¿½
+    short bonuspalheta;          // ï¿½ 1 se ele estï¿½ com o buff da palheta, ï¿½ 0 se nï¿½o estï¿½
 } JOGADOR;
 
 typedef struct
-//ESTRUTURA TIJOLO
+// ESTRUTURA TIJOLO
 {
     COORDENADA ponto1; // coordenada do canto superior esq do envelope
     COORDENADA ponto2; // coordenada do canto inferior dir do envelope
@@ -111,21 +113,23 @@ typedef struct
 } TIJOLO;
 
 typedef struct
-//ESTRUTURA FASE
+// ESTRUTURA FASE
 {
     int intervalo_bola; // intervalo em que a bola se movimenta, quando maior, mais devagar ela mexe
-    int sleep;         // velocidade do jogo inteiro, quanto maior o sleep, mais devagar o jogo
-    COLORS cor;        // cor da moldura da fase, pra diferenciar as fases
-    int multiplicador; //fase 1 os tijolos tem 1x pontos, fase 2 tijolos tem 2x pontos, fase 3 tijolos tem 4x pontos
-    int tam_pal;      // tamanho da palheta em certa fase
+    int sleep;          // velocidade do jogo inteiro, quanto maior o sleep, mais devagar o jogo
+    int cor;            // cor da moldura da fase, pra diferenciar as fases
+    int multiplicador;  // fase 1 os tijolos tem 1x pontos, fase 2 tijolos tem 2x pontos, fase 3 tijolos tem 4x pontos
+    int tam_pal;        // tamanho da palheta em certa fase
 } FASE;
 
 typedef struct
-//ESTRUTURA PAUSA JOGO
+// ESTRUTURA PAUSA JOGO
 {
     JOGADOR jog;
     TIJOLO listaTijolos[NUMTIJ];
     BOLA bol;
     PALHETA pal;
     FASE level[ETAPAS];
-}PAUSAJOGO;
+} PAUSAJOGO;
+
+#endif

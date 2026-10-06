@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ncurses.h>
 #include "Estruturas_Constantes.h"
 #include "interface.h"
+
+static void print_at(int x, int y, const char *text)
+{
+    mvaddstr(y - 1, x - 1, text);
+}
 
 int salva_estado_jogo(PAUSAJOGO status)
 // salva todas as estruturas do jogo num arquivo binario
@@ -14,14 +20,14 @@ int salva_estado_jogo(PAUSAJOGO status)
     if((save = fopen(nomeArquivo, "wb")) == NULL)
     {
         limpa_erro_arquivo();
-        cputsxy(XINI, YFIM + 1, "\n*** ERRO AO CRIAR ARQUIVO PARA SALVAR PROGRESSO ***\n");
+        print_at(XINI, YFIM + 1, "\n*** ERRO AO CRIAR ARQUIVO PARA SALVAR PROGRESSO ***\n");
         return 1;
     }
 
     if(fwrite(&status, sizeof(PAUSAJOGO), 1, save) != 1)
     {
         limpa_erro_arquivo();
-        cputsxy(XINI, YFIM + 1, "\n*** ERRO AO TENTAR SALVAR O PROGRESSO ***\n");
+        print_at(XINI, YFIM + 1, "\n*** ERRO AO TENTAR SALVAR O PROGRESSO ***\n");
         fclose(save);
         return 1;
     }
@@ -40,14 +46,14 @@ int le_jogo_salvo(PAUSAJOGO *status)
     if((save = fopen(nomeArquivo, "rb")) == NULL)
     {
         limpa_erro_arquivo();
-        cputsxy(XINI, YFIM + 1, "\n*** ERRO AO ABRIR O ARQUIVO DE JOGO SALVO ***\n");
+        print_at(XINI, YFIM + 1, "\n*** ERRO AO ABRIR O ARQUIVO DE JOGO SALVO ***\n");
         return 1;
     }
 
     if(fread(status, sizeof(PAUSAJOGO), 1, save) != 1)
     {
         limpa_erro_arquivo();
-        cputsxy(XINI, YFIM + 1, "\n*** ERRO AO CARREGAR AQUIVRO DE JOGO SALVO ***\n");
+        print_at(XINI, YFIM + 1, "\n*** ERRO AO CARREGAR AQUIVRO DE JOGO SALVO ***\n");
         fclose(save);
         return 1;
     }
@@ -67,7 +73,7 @@ int carrega_tijolos(TIJOLO listaTijolos[], FILE *arq)
         if(fread(&buffer, sizeof(TIJOLO), 1, arq) != 1 && !feof(arq))
         {
             limpa_erro_arquivo();
-            cputsxy(XINI + 1, YFIM + 1, "\n*** ERRO AO LER O ARQUIVO COM LAYOUT***\n");
+            print_at(XINI + 1, YFIM + 1, "\n*** ERRO AO LER O ARQUIVO COM LAYOUT***\n");
             fclose(arq);
             return 0;
         }
@@ -96,7 +102,7 @@ int preenche_layout_tijolo(TIJOLO listaTijolos[], int fase)
     if((arq = fopen(nomeFase, "rb")) == NULL)
     {
         limpa_erro_arquivo();
-        cputsxy(XINI + 1, YFIM + 1, "***ERRO AO ABRIR O ARQUIVO COM LAYOUT***");
+        print_at(XINI + 1, YFIM + 1, "***ERRO AO ABRIR O ARQUIVO COM LAYOUT***");
         return 0;
     }
 
@@ -110,7 +116,7 @@ int AbreArqJog(FILE **arqtxt)
     if((*arqtxt = fopen("BreakoutJog.txt", "r")) == NULL)
     {
         limpa_erro_arquivo();
-        cputsxy(XINI + 1, YFIM + 1, "***ERRO AO ABRIR O ARQUIVO COM SCORES***");
+        print_at(XINI + 1, YFIM + 1, "***ERRO AO ABRIR O ARQUIVO COM SCORES***");
         return 0;
     }
     else
@@ -153,10 +159,10 @@ int LeArqTexto(FILE *arqtxt, JOGADOR score[])
 
 int SalvaListaJogadores (JOGADOR lista[])
 /* Sobrescreva o arquivo texto BreakoutJog.txt com os cinco nomes de jogadores que tiveram
-as maiores pontuações, mantendo o formato original do arquivo. Ou seja, as pontuações são
-demarcadas por #.  Retorne 1 se a operação foi realizada com sucesso e zero se o arquivo não
-pode ser salvo. Se não existiam 5 nomes no arquivo original devem ser salvos os jogadores
-anteriores  e o atual, sem repetição de nomes.  */
+as maiores pontuaï¿½ï¿½es, mantendo o formato original do arquivo. Ou seja, as pontuaï¿½ï¿½es sï¿½o
+demarcadas por #.  Retorne 1 se a operaï¿½ï¿½o foi realizada com sucesso e zero se o arquivo nï¿½o
+pode ser salvo. Se nï¿½o existiam 5 nomes no arquivo original devem ser salvos os jogadores
+anteriores  e o atual, sem repetiï¿½ï¿½o de nomes.  */
 {
     int i = 0;
     FILE *arqtxt;
@@ -164,21 +170,21 @@ anteriores  e o atual, sem repetição de nomes.  */
     if((arqtxt = fopen("BreakoutJog.txt", "w")) == NULL)
     {
         limpa_erro_arquivo();
-        cputsxy(XINI + 1, YFIM + 1, "*** ERRO AO ABRIR O ARQUIVO PARA SALVAR AS PONTUACOES ***");
+        print_at(XINI + 1, YFIM + 1, "*** ERRO AO ABRIR O ARQUIVO PARA SALVAR AS PONTUACOES ***");
         return 0;
     }
     else
     {
         while(i < 5 && lista[i].pontos != 0)
-        //se o jogador não tiver pontuacao, para a gravacao pois o vetor está ordenado
+        //se o jogador nï¿½o tiver pontuacao, para a gravacao pois o vetor estï¿½ ordenado
         {
 
             if(fprintf(arqtxt,"%s#%d\n",lista[i].nome,lista[i].pontos) < 0)
             {
                 limpa_erro_arquivo();
-                cputsxy(XINI + 1, YFIM + 1, "*** ERRO AO GRAVAR AS PONTUACOES ***");
+                print_at(XINI + 1, YFIM + 1, "*** ERRO AO GRAVAR AS PONTUACOES ***");
                 fclose(arqtxt);
-                return 0;//não escreveu com êxito
+                return 0;//nï¿½o escreveu com ï¿½xito
             }
             i++;
         }

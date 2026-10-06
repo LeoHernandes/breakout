@@ -1,4 +1,5 @@
-void esconde_cursor();
+#ifndef INTERFACE_H
+#define INTERFACE_H
 
 void desenha_janela();
 
@@ -32,7 +33,7 @@ void info_bonus(char *bonus);
 
 void limpa_bonus();
 
-void gera_bonus();
+void gera_bonus(TIJOLO listaTijolos[], PALHETA *pal, JOGADOR *jog);
 
 void limpa_palheta(PALHETA pal);
 
@@ -62,8 +63,10 @@ void inserirJogador(int i, JOGADOR jog, JOGADOR lista[]);
 
 void MostraListaJogadores(JOGADOR jog, JOGADOR score[]);
 
-void OrdenaListaJogadores (JOGADOR  jog, JOGADOR lista[]);
+void OrdenaListaJogadores(JOGADOR jog, JOGADOR lista[]);
 
-void animacao_troca_fase(COLORS cor);
+void animacao_troca_fase(int cor);
 
 void pede_nome(JOGADOR *jog);
+
+#endif

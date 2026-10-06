@@ -1,3 +1,6 @@
+#ifndef MENU_H
+#define MENU_H
+
 void printa_moldura_main_menu();
 
 int printa_main_menu();
@@ -15,3 +18,5 @@ void printa_instrucoes();
 void printa_dificuldades();
 
 void move_seta_dificuldade(int *opcao);
+
+#endif

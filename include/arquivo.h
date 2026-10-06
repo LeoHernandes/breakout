@@ -1,3 +1,6 @@
+#ifndef ARQUIVO_H
+#define ARQUIVO_H
+
 int salva_estado_jogo(PAUSAJOGO status);
 
 int le_jogo_salvo(PAUSAJOGO *status);
@@ -12,4 +15,6 @@ void preenche_jogador_pnts(FILE *arqtxt, JOGADOR *jog);
 
 int LeArqTexto(FILE *arqtxt, JOGADOR score[]);
 
-int SalvaListaJogadores (JOGADOR lista[]);
+int SalvaListaJogadores(JOGADOR lista[]);
+
+#endif
