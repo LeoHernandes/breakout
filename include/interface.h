@@ -35,6 +35,8 @@ void limpa_bonus();
 
 void gera_bonus(TIJOLO listaTijolos[], PALHETA *pal, JOGADOR *jog);
 
+void error_alert(const char *mensagem);
+
 void limpa_palheta(PALHETA pal);
 
 void aumenta_pontos(TIJOLO listaTijolos[]);

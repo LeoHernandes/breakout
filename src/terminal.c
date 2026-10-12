@@ -38,6 +38,9 @@ void print_text_at(int x, int y, const char *text)
 void setup_terminal()
 {
     initscr();
+    keypad(stdscr, TRUE); // enable special keys (like arrow keys)
+    noecho();             // disable echoing of typed characters
+    curs_set(0);          // invisible cursor
     start_color();
     init_pair(1, COLOR_RED, COLOR_BLACK);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
@@ -46,6 +49,11 @@ void setup_terminal()
     init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
     init_pair(6, COLOR_CYAN, COLOR_BLACK);
     init_pair(7, COLOR_WHITE, COLOR_BLACK);
+}
+
+void reset_terminal()
+{
+    endwin();
 }
 
 void text_color(int color)

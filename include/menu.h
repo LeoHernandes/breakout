@@ -3,17 +3,13 @@
 
 void printa_moldura_main_menu();
 
-int printa_main_menu();
-
-int printa_creditos();
+int render_main_menu();
 
 void printa_limpa_seta(int opcao, short acao);
 
-void gera_opcao(char tecla, int *opcao);
+void gera_opcao(int tecla, int *opcao);
 
 void move_seta(int *opcao);
-
-void printa_instrucoes();
 
 void printa_dificuldades();
 

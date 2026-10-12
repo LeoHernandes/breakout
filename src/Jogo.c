@@ -413,29 +413,17 @@ int seleciona_menu(PALHETA pal, BOLA bol, TIJOLO listaTijolos[], FASE level[], J
         getch();
         break;
     case 4:
-        printa_instrucoes();
-        getch();
-        break;
-    case 5:
-        printa_creditos();
-        getch();
-        break;
-    case 6:
-        // se o usuario escolheu sair, retorna 0
         return 0;
     }
 
-    // se o usuario nao quis sair, devolve 1 para
-    // sinalizar para funcao externa
     return 1;
 }
 
 void controla_menu(PALHETA pal, BOLA bol, TIJOLO listaTijolos[], FASE level[], JOGADOR jog, JOGADOR score[], PAUSAJOGO status)
-// mantem o usuario no menu ate que ele deseje sair
 {
     do
     {
-        printa_main_menu();
+        render_main_menu();
     } while (seleciona_menu(pal, bol, listaTijolos, level, jog, score, status));
 }
 
@@ -466,6 +454,8 @@ int main()
     clear_screen();
     move_cursor_to(1, 1);
     text_color(COLOR_WHITE);
+
+    reset_terminal();
 
     return 0;
 }

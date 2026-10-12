@@ -20,7 +20,7 @@ typedef enum
     TITULO_XFIM = 70,
     TITULO_YINI = 9,
     TITULO_YFIM = 15,
-    SETA_X = 32,
+    SETA_X = 4,
     JANELAINFO_LARGURA = 35,
     ALTURA_DIVISAO = 15,
     ALTURA_DIVISAO2 = 10

@@ -6,27 +6,6 @@
 #include "Estruturas_Constantes.h"
 #include "terminal.h"
 
-void printa_creditos_ingame()
-// printa os creditos do jogo no canto inferior direito do jogo
-{
-    move_cursor_to(XFIM + 2, ALTURA_DIVISAO + 10);
-    printf("Semestre 2020/1 - INF1202");
-    move_cursor_to(XFIM + 2, ALTURA_DIVISAO + 11);
-    printf("Algoritmos e Programacao");
-    move_cursor_to(XFIM + 2, ALTURA_DIVISAO + 12);
-    printf("Turma D");
-    move_cursor_to(XFIM + 2, ALTURA_DIVISAO + 13);
-    printf("Professora Mara Abel");
-    move_cursor_to(XFIM + 2, ALTURA_DIVISAO + 14);
-    printf("Professor Fernando");
-    move_cursor_to(XFIM + 2, ALTURA_DIVISAO + 16);
-    printf("Programadores:");
-    move_cursor_to(XFIM + 2, ALTURA_DIVISAO + 17);
-    printf("Leo Hernandes de Vasconcelos");
-    move_cursor_to(XFIM + 2, ALTURA_DIVISAO + 18);
-    printf("Nikolas Padao Schuster");
-}
-
 void desenha_janela(FASE level)
 // desenha a moldura/limite da area jogavel
 {
@@ -98,8 +77,6 @@ void desenha_janela_informacoes(FASE level)
     move_cursor_to(XFIM + 1, ALTURA_DIVISAO2);
     for (i = XFIM + 1; i < XFIM + JANELAINFO_LARGURA; i++) // faz a outra divisao da janela de info
         printf("%c", BARRA_H);
-
-    printa_creditos_ingame();
 }
 
 void printa_palheta(PALHETA pal)
@@ -363,6 +340,35 @@ void limpa_erro_arquivo()
     }
 }
 
+void error_alert(const char *mensagem)
+{
+    int linhas, colunas;
+    int altura = 5;
+    int largura = (int)strlen(mensagem) + 6;
+
+    getmaxyx(stdscr, linhas, colunas);
+    if (largura > colunas - 2)
+        largura = colunas - 2;
+
+    WINDOW *dialogo = newwin(
+        altura, largura,
+        (linhas - altura) / 2,
+        (colunas - largura) / 2);
+
+    if (dialogo == NULL)
+        return;
+
+    box(dialogo, 0, 0);
+    mvwaddnstr(dialogo, 1, 2, mensagem, largura - 4);
+    mvwprintw(dialogo, 3, 2, "Press any key to continue");
+    wrefresh(dialogo);
+    wgetch(dialogo);
+    wborder(dialogo, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+    wrefresh(dialogo);
+    delwin(dialogo);
+    wrefresh(stdscr);
+}
+
 int printa_game_over()
 // carrega o arquivo que contem o texto de gameover e printa na tela
 // retorna 0 se houve erro, retorna 1 se foi feito com sucesso
@@ -370,7 +376,7 @@ int printa_game_over()
     FILE *arq;
     char linha[STRINGAO];
 
-    if ((arq = fopen("gameover.txt", "r")) == NULL)
+    if ((arq = fopen("assets/gameover.txt", "r")) == NULL)
     {
         limpa_erro_arquivo();
         print_text_at(XINI + 1, YFIM + 1, "*** ERRO AO ABRIR O ARQUIVO DE GAME-OVER ***");
@@ -556,7 +562,7 @@ int printa_winner()
     FILE *arq;
     char linha[STRINGAO];
 
-    if ((arq = fopen("ganhou.txt", "r")) == NULL)
+    if ((arq = fopen("assets/ganhou.txt", "r")) == NULL)
     {
 
         limpa_erro_arquivo();
