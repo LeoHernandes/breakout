@@ -11,6 +11,7 @@
 #include "movimento_colisao.h"
 #include "menu.h"
 #include "terminal.h"
+#include "game_controller.h"
 
 //------------------------------------
 
@@ -429,27 +430,9 @@ void controla_menu(PALHETA pal, BOLA bol, TIJOLO listaTijolos[], FASE level[], J
 
 int main()
 {
-    setup_terminal();
-    PALHETA pal = {{POS_XINI_PALHETA, ALTURA_PALHETA}, {POS_XINI_PALHETA, ALTURA_PALHETA}, COLOR_MAGENTA};
-    BOLA bol = {{0, ALTURA_PALHETA - 1}, {1, 0}, COLOR_GREEN};
-    TIJOLO listaTijolo[NUMTIJ] = {};
-    FASE level[ETAPAS] =
-        {
-            {0, 0, COLOR_MAGENTA, 1, 0},
-            {0, 0, COLOR_CYAN, 2, 0},
-            {0, 0, COLOR_MAGENTA, 4, 0}};
-    JOGADOR jog = {"", VIDAS, -1, 0, 0, 0};
-    JOGADOR score[MAX_JOGADORES] = {};
-    PAUSAJOGO status = {.jog = jog};
-    FILE *arqtxt;
+    initialize_ui();
 
-    if (AbreArqJog(&arqtxt))
-        // ja carrega a lista de scores
-        LeArqTexto(arqtxt, score);
-
-    srand(time(0)); // coloca a seed no clock do sistema
-
-    controla_menu(pal, bol, listaTijolo, level, jog, score, status);
+    game_loop();
 
     clear_screen();
     move_cursor_to(1, 1);

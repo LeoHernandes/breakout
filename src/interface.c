@@ -1,10 +1,5 @@
-#include <stdio.h>
-#include <ncurses.h>
-#include <string.h>
-#include <time.h>
-#include <stdlib.h>
-#include "Estruturas_Constantes.h"
-#include "terminal.h"
+
+#include "interface.h"
 
 void desenha_janela(FASE level)
 // desenha a moldura/limite da area jogavel
@@ -652,4 +647,52 @@ void pede_nome(JOGADOR *jog)
     move_cursor_to((XINI + XFIM) / 2, (YINI + YFIM) / 2 + 2);
     echo();
     getnstr(jog->nome, MAX_NOME_JOGADOR - 1);
+}
+
+void initialize_ui()
+{
+    initialize_terminal();
+}
+
+void present_frame()
+{
+    wnoutrefresh(stdscr);
+    doupdate();
+}
+
+int render_main_menu()
+{
+    FILE *arq;
+    char linha[STRINGAO];
+
+    if ((arq = fopen("assets/main_menu.txt", "r")) == NULL)
+    {
+        limpa_erro_arquivo();
+        error_alert("Error opening assets/main_menu.txt");
+        return 0;
+    }
+
+    text_color(COLOR_MAGENTA);
+    int row = 1;
+    while (!feof(arq))
+    {
+        if (fgets(linha, sizeof(linha), arq) == NULL)
+        {
+            limpa_erro_arquivo();
+            error_alert("Error reading assets/main_menu.txt");
+            fclose(arq);
+            return 0;
+        }
+        else
+        {
+            size_t length = strlen(linha);
+            if (length > 0 && linha[length - 1] == '\n')
+                linha[--length] = '\0';
+            if (length > 0 && linha[length - 1] == '\r')
+                linha[--length] = '\0';
+            print_text_at(1, row++, linha);
+        }
+    }
+    fclose(arq);
+    return 1;
 }

@@ -3,8 +3,8 @@
 PROJECT = breakout
 
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11 -Iinclude
-LDLIBS = -lncurses
+CFLAGS = -Wall -Wextra -std=c11 -D_POSIX_C_SOURCE=199309L -Iinclude
+LDLIBS = -lncurses -lpanel
 
 CDIR = src
 ODIR = obj

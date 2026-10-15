@@ -1,6 +1,14 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
+#include <stdio.h>
+#include <ncurses.h>
+#include <string.h>
+#include <time.h>
+#include <stdlib.h>
+#include "Estruturas_Constantes.h"
+#include "terminal.h"
+
 void desenha_janela();
 
 void desenha_janela_informacoes();
@@ -70,5 +78,11 @@ void OrdenaListaJogadores(JOGADOR jog, JOGADOR lista[]);
 void animacao_troca_fase(int cor);
 
 void pede_nome(JOGADOR *jog);
+
+void initialize_ui();
+
+void present_frame();
+
+int render_main_menu();
 
 #endif

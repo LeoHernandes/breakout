@@ -35,7 +35,7 @@ void print_text_at(int x, int y, const char *text)
     mvaddstr(y - 1, x - 1, text);
 }
 
-void setup_terminal()
+void initialize_terminal()
 {
     initscr();
     keypad(stdscr, TRUE); // enable special keys (like arrow keys)

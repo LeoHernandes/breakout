@@ -9,7 +9,7 @@ void clear_screen();
 int keyboard_hit();
 void print_char_at(int x, int y, chtype character);
 void print_text_at(int x, int y, const char *text);
-void setup_terminal();
+void initialize_terminal();
 void text_color(int color);
 void reset_terminal();
 
