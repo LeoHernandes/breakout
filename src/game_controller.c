@@ -1,25 +1,20 @@
 #include "game_controller.h"
 
-void _update_scene(Scene *scene, float deltaTime)
+void _update_scene(Game *game, float deltaTime)
 {
-    switch (scene->sceneType)
+    switch (game->gameState)
     {
-    case MAIN_MENU:
-        // Update main menu logic
-        break;
-    case DIFFICULTY:
-        // Update difficulty selection logic
-        break;
+
     case PLAYING:
         // Update game playing logic
         break;
     case PAUSED:
         // Update paused logic
         break;
-    case HIGH_SCORES:
+    case SAVING:
         // Update high scores logic
         break;
-    case EXIT:
+    case LOADING:
         // Handle exit logic
         break;
     default:
@@ -27,27 +22,21 @@ void _update_scene(Scene *scene, float deltaTime)
     }
 }
 
-void _render_scene(Scene scene)
+void _render_scene(Game game)
 {
-    switch (scene.sceneType)
+    switch (game.gameState)
     {
-    case MAIN_MENU:
-        render_main_menu();
-        break;
-    case DIFFICULTY:
-        // Render difficulty selection
-        break;
     case PLAYING:
         // Render game playing scene
         break;
     case PAUSED:
         // Render paused scene
         break;
-    case HIGH_SCORES:
-        // Render high scores scene
+    case SAVING:
+        // Render saving scene
         break;
-    case EXIT:
-        // Handle exit
+    case LOADING:
+        // Render loading scene
         break;
     default:
         break;
@@ -59,8 +48,8 @@ void _render_scene(Scene scene)
 void game_loop()
 {
 
-    Scene scene = {
-        .sceneType = MAIN_MENU};
+    Game game = {
+        .gameState = PLAYING};
 
     struct timespec previousTime,
         currentTime;
@@ -75,7 +64,7 @@ void game_loop()
             (currentTime.tv_nsec - previousTime.tv_nsec) / 1000000000.0f;
         previousTime = currentTime;
 
-        _update_scene(&scene, deltaTimeInSeconds);
-        _render_scene(scene);
+        _update_scene(&game, deltaTimeInSeconds);
+        _render_scene(game);
     }
 }

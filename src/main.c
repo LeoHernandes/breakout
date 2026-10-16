@@ -9,7 +9,7 @@
 #include "arquivo.h"
 #include "interface.h"
 #include "movimento_colisao.h"
-#include "menu.h"
+#include "menu_controller.h"
 #include "terminal.h"
 #include "game_controller.h"
 
@@ -314,8 +314,6 @@ void seleciona_dificuldade(PALHETA pal, BOLA bol, TIJOLO listaTijolos[], FASE le
 {
     int opcao = 1;
     clear_screen();
-    printa_dificuldades();
-    move_seta_dificuldade(&opcao);
 
     switch (opcao)
     {
@@ -374,7 +372,6 @@ int seleciona_menu(PALHETA pal, BOLA bol, TIJOLO listaTijolos[], FASE level[], J
 {
     int opcao = 1;
 
-    move_seta(&opcao);
     // verifica qual opcao ele quis
     clear_screen();
     switch (opcao)
@@ -420,25 +417,13 @@ int seleciona_menu(PALHETA pal, BOLA bol, TIJOLO listaTijolos[], FASE level[], J
     return 1;
 }
 
-void controla_menu(PALHETA pal, BOLA bol, TIJOLO listaTijolos[], FASE level[], JOGADOR jog, JOGADOR score[], PAUSAJOGO status)
-{
-    do
-    {
-        render_main_menu();
-    } while (seleciona_menu(pal, bol, listaTijolos, level, jog, score, status));
-}
-
 int main()
 {
     initialize_ui();
 
-    game_loop();
+    main_menu();
 
-    clear_screen();
-    move_cursor_to(1, 1);
-    text_color(COLOR_WHITE);
-
-    reset_terminal();
+    clear_ui();
 
     return 0;
 }

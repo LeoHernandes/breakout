@@ -8,22 +8,20 @@
 
 typedef enum
 {
-    MAIN_MENU,
-    DIFFICULTY,
     PLAYING,
     PAUSED,
-    HIGH_SCORES,
-    EXIT
-} SceneType;
+    SAVING,
+    LOADING,
+} GameState;
 
 typedef struct
 {
-    SceneType sceneType;
+    GameState gameState;
     Player player;
     Ball ball;
     Paddle paddle;
     Brick bricks[MAX_BRICKS];
-} Scene;
+} Game;
 
 void game_loop();
 
