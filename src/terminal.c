@@ -27,12 +27,12 @@ int keyboard_hit()
 
 void print_char_at(int x, int y, chtype character)
 {
-    mvaddch(y - 1, x - 1, character);
+    mvaddch(y, x, character);
 }
 
 void print_text_at(int x, int y, const char *text)
 {
-    mvaddstr(y - 1, x - 1, text);
+    mvaddstr(y, x, text);
 }
 
 void initialize_terminal()
@@ -41,14 +41,30 @@ void initialize_terminal()
     keypad(stdscr, TRUE); // enable special keys (like arrow keys)
     noecho();             // disable echoing of typed characters
     curs_set(0);          // invisible cursor
+
+    int foregroundColors[] = {
+        COLOR_BLACK,
+        COLOR_WHITE,
+        COLOR_RED,
+        COLOR_GREEN,
+        COLOR_YELLOW,
+        COLOR_BLUE,
+        COLOR_MAGENTA,
+        COLOR_CYAN,
+    };
+    int backgroundColors[] = {
+        COLOR_BLACK,
+        COLOR_WHITE};
     start_color();
-    init_pair(1, COLOR_RED, COLOR_BLACK);
-    init_pair(2, COLOR_GREEN, COLOR_BLACK);
-    init_pair(3, COLOR_YELLOW, COLOR_BLACK);
-    init_pair(4, COLOR_BLUE, COLOR_BLACK);
-    init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(6, COLOR_CYAN, COLOR_BLACK);
-    init_pair(7, COLOR_WHITE, COLOR_BLACK);
+
+    for (int bgIndex = 0; bgIndex < 2; bgIndex++)
+    {
+        for (int fgIndex = 0; fgIndex < COLOR_AMOUNT; fgIndex++)
+        {
+            int pairNumber = bgIndex * COLOR_AMOUNT + fgIndex;
+            init_pair(pairNumber, foregroundColors[fgIndex], backgroundColors[bgIndex]);
+        }
+    }
 }
 
 void reset_terminal()
@@ -58,5 +74,21 @@ void reset_terminal()
 
 void text_color(int color)
 {
-    attron(COLOR_PAIR(color));
+    short pair;
+    if (wattr_get(stdscr, NULL, &pair, NULL) == OK)
+    {
+        short backgroundBase = (pair / COLOR_AMOUNT) * COLOR_AMOUNT;
+        attron(COLOR_PAIR(backgroundBase + color));
+    }
+}
+
+void background_color(int color)
+{
+    short pair;
+    if (wattr_get(stdscr, NULL, &pair, NULL) == OK)
+    {
+        short foregroundColor = pair % COLOR_AMOUNT;
+        short backgroundBase = color * COLOR_AMOUNT;
+        attron(COLOR_PAIR(backgroundBase + foregroundColor));
+    }
 }

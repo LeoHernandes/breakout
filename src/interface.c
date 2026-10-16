@@ -654,45 +654,61 @@ void initialize_ui()
     initialize_terminal();
 }
 
+void clear_ui()
+{
+    reset_terminal();
+}
+
 void present_frame()
 {
     wnoutrefresh(stdscr);
     doupdate();
 }
 
-int render_main_menu()
+void text(const char *text, int x, int y, Color color)
 {
-    FILE *arq;
-    char linha[STRINGAO];
+    background_color(BLACK);
+    text_color(color);
+    print_text_at(x, y, text);
+}
 
-    if ((arq = fopen("assets/main_menu.txt", "r")) == NULL)
+void text_highlight(const char *text, int x, int y, Color color)
+{
+    background_color(WHITE);
+    text_color(color);
+    print_text_at(x, y, text);
+}
+
+void render_asset(const char *asset_path, int x, int y)
+{
+    FILE *file;
+    char lineBuffer[MAX_ASSET_WIDTH];
+    int color;
+
+    if ((file = fopen(asset_path, "r")) == NULL)
     {
-        limpa_erro_arquivo();
-        error_alert("Error opening assets/main_menu.txt");
-        return 0;
+        error_alert("Error opening asset file");
+        return;
     }
 
-    text_color(COLOR_MAGENTA);
-    int row = 1;
-    while (!feof(arq))
+    color = fgetc(file);
+    if (color == EOF || color < '1' || color > '7')
     {
-        if (fgets(linha, sizeof(linha), arq) == NULL)
-        {
-            limpa_erro_arquivo();
-            error_alert("Error reading assets/main_menu.txt");
-            fclose(arq);
-            return 0;
-        }
-        else
-        {
-            size_t length = strlen(linha);
-            if (length > 0 && linha[length - 1] == '\n')
-                linha[--length] = '\0';
-            if (length > 0 && linha[length - 1] == '\r')
-                linha[--length] = '\0';
-            print_text_at(1, row++, linha);
-        }
+        error_alert("Invalid asset color");
+        fclose(file);
+        return;
     }
-    fclose(arq);
-    return 1;
+
+    text_color(color - '0');
+    int row = y;
+    while (fgets(lineBuffer, sizeof(lineBuffer), file) != NULL)
+    {
+        lineBuffer[strcspn(lineBuffer, "\r\n")] = '\0';
+        print_text_at(x, ++row, lineBuffer);
+    }
+
+    if (ferror(file))
+        error_alert("Error reading asset file");
+
+    fclose(file);
 }

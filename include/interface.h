@@ -9,6 +9,20 @@
 #include "Estruturas_Constantes.h"
 #include "terminal.h"
 
+#define MAX_ASSET_WIDTH 256
+
+typedef enum
+{
+    BLACK,
+    WHITE,
+    RED,
+    GREEN,
+    YELLOW,
+    BLUE,
+    MAGENTA,
+    CYAN,
+} Color;
+
 void desenha_janela();
 
 void desenha_janela_informacoes();
@@ -81,8 +95,14 @@ void pede_nome(JOGADOR *jog);
 
 void initialize_ui();
 
+void clear_ui();
+
 void present_frame();
 
-int render_main_menu();
+void render_asset(const char *asset_path, int x, int y);
+
+void text(const char *text, int x, int y, Color color);
+
+void text_highlight(const char *text, int x, int y, Color color);
 
 #endif
